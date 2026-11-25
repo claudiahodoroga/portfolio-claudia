@@ -23,6 +23,7 @@ const FORM_ENDPOINT = "/api/submit";
     green: "#2E7D4F",
   };
 
+  const CASE_PAGES = { gdg: "work/gdg.html", lfc: "work/lfc.html", audit: "work/audits.html" };
   /* projects, in tab order from the draft */
   const projects = {
     lfc: {
@@ -122,9 +123,10 @@ const FORM_ENDPOINT = "/api/submit";
     pagesEl = $("#pages");
   const inside = $("#inside");
   function placeSheet() {
-    if (narrow) {
+    const home = narrow ? null : folder.classList.contains("settled") ? $("#leftflat") : inside;
+    if (!home) {
       if (sheet.parentNode !== pagesEl) pagesEl.prepend(sheet);
-    } else if (sheet.parentNode !== inside) inside.appendChild(sheet);
+    } else if (sheet.parentNode !== home) home.appendChild(sheet);
   }
   placeSheet();
   const defPos = () =>
@@ -219,6 +221,7 @@ const FORM_ENDPOINT = "/api/submit";
     const p = projects[k];
     folder.style.setProperty("--fc", p.color);
     $("#sheetTxt").innerHTML = `<h3>${p.title}</h3>${p.body.map((t) => `<p>${t}</p>`).join("")}`;
+    $("#caseLink").href = CASE_PAGES[k];
     renderSnips(k);
   }
   let switching = false,
@@ -227,8 +230,25 @@ const FORM_ENDPOINT = "/api/submit";
     sTarget = 1,
     zRaf = 0;
   function applyS() {
-    folder.style.transform =
-      fsh.style.transform = `translate(-50%,-50%) translateX(var(--shift)) scale(${sCur})`;
+    folder.style.transform = fsh.style.transform =
+      sCur === 1
+        ? `translate(${-Math.round(folder.offsetWidth / 2)}px,${-Math.round(folder.offsetHeight / 2)}px) translateX(var(--shift))`
+        : `translate(-50%,-50%) translateX(var(--shift)) scale(${sCur})`;
+    if (sCur !== 1) setFlat(false);
+  }
+  /* Once the folder has finished opening, drop the 3D so text and tabs render sharp */
+  let flatT = 0;
+  function setFlat(on) {
+    if (on === folder.classList.contains("settled")) return;
+    folder.classList.toggle("settled", on);
+    $("#folderL").classList.toggle("settled", on);
+    placeSheet();
+  }
+  function scheduleFlat(ms) {
+    clearTimeout(flatT);
+    flatT = setTimeout(() => {
+      if (folder.classList.contains("open") && !switching && sCur === 1) setFlat(true);
+    }, ms);
   }
   function zoomTick() {
     sCur += (sTarget - sCur) * 0.14;
@@ -264,6 +284,8 @@ const FORM_ENDPOINT = "/api/submit";
       return;
     }
     switching = true;
+    clearTimeout(flatT);
+    setFlat(false);
     folder.classList.add("quick");
     folder.classList.remove("open");
     syncSh();
@@ -275,6 +297,7 @@ const FORM_ENDPOINT = "/api/submit";
         folder.classList.remove("quick");
         syncSh();
         switching = false;
+        scheduleFlat(0);
       }, 560);
     }, 520);
   }
@@ -596,6 +619,8 @@ const FORM_ENDPOINT = "/api/submit";
       folder.style.transform = fsh.style.transform = "translate(-50%,-50%)";
       folder.classList.add("open");
       syncSh();
+      sCur = 1;
+      setFlat(true);
       reelL.classList.add("live");
       fineL.classList.add("live");
       setFine(true, false);
@@ -638,7 +663,10 @@ const FORM_ENDPOINT = "/api/submit";
       if (y >= B.z1 * 0.97 && !isOpen) {
         folder.classList.remove("rev");
         folder.classList.add("open");
+        scheduleFlat(root.classList.contains("instant") ? 60 : 1200);
       } else if (y < B.z1 * 0.9 && isOpen) {
+        clearTimeout(flatT);
+        setFlat(false);
         folder.classList.add("rev");
         folder.classList.remove("open");
         closeLock = now + 650;
@@ -892,9 +920,85 @@ const FORM_ENDPOINT = "/api/submit";
     if (!cvEl.hidden) cvTri.close();
     if (!menuEl.hidden) menuTri.close();
   });
+  /* Case study transition: the white sheet lifts off the folder and grows into the case study paper */
+  function caseRect() {
+    const w = Math.min(820, innerWidth * 0.92),
+      cw = document.documentElement.clientWidth,
+      top = innerWidth <= 700 ? 72 : 96;
+    return { left: (cw - w) / 2, top, width: w, height: innerHeight - top + 8 };
+  }
+  function px(r) {
+    return { left: r.left + "px", top: r.top + "px", width: r.width + "px", height: r.height + "px" };
+  }
+  function paperOverlay(r, withText) {
+    const o = document.createElement("div");
+    o.className = "raise";
+    Object.assign(o.style, px(r));
+    if (withText) o.innerHTML = `<div class="txt">${$("#sheetTxt").innerHTML}</div>`;
+    document.body.appendChild(o);
+    return o;
+  }
+  $("#caseLink").addEventListener("click", (e) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    const href = e.currentTarget.getAttribute("href");
+    if (rm) {
+      location.href = href;
+      return;
+    }
+    const r = sheet.getBoundingClientRect(),
+      o = paperOverlay(r, true),
+      t = caseRect();
+    o.animate(
+      [
+        { transform: "none" },
+        { transform: "translateY(-10px) rotate(-.6deg)", boxShadow: "6px 16px 0 rgba(17,17,17,.16)" },
+      ],
+      { duration: 260, easing: "ease-out", fill: "forwards" },
+    )
+      .finished.then(() => {
+        o.querySelector(".txt").style.opacity = 0;
+        return o.animate(
+          [
+            { ...px(r), transform: "translateY(-10px) rotate(-.6deg)" },
+            { ...px(t), transform: "none", boxShadow: "3px 6px 0 rgba(17,17,17,.18)" },
+          ],
+          { duration: 620, easing: "cubic-bezier(.6,0,.2,1)", fill: "forwards" },
+        ).finished;
+      })
+      .then(() => {
+        location.href = href;
+      });
+  });
+  /* Coming back from a case study (index.html#work-gdg): open the folder on that file and shrink the paper back into it */
+  function returnFromCase() {
+    const m = location.hash.match(/^#work-(gdg|lfc|audit)$/);
+    if (!m) return;
+    history.replaceState(null, "", location.pathname);
+    setTab(m[1]);
+    jumpTo(target("work"), "work");
+    if (rm) return;
+    requestAnimationFrame(() => {
+      const r = sheet.getBoundingClientRect(),
+        o = paperOverlay(caseRect(), false);
+      o.animate([{ ...px(caseRect()) }, { ...px(r) }], {
+        duration: 620,
+        easing: "cubic-bezier(.6,0,.2,1)",
+        fill: "forwards",
+      })
+        .finished.then(
+          () => o.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: "forwards" }).finished,
+        )
+        .then(() => o.remove());
+    });
+  }
+  addEventListener("pageshow", (e) => {
+    if (e.persisted) $$(".raise").forEach((o) => o.remove());
+  });
   document.fonts.ready.then(() => {
     layout();
     playLoad();
+    returnFromCase();
   });
 
   /* Phones: keep "Experience Designer & Community Operations" on one line by shrinking it until it fits */

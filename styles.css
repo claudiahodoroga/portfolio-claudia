@@ -481,7 +481,6 @@ nav a[aria-current="true"] {
   aspect-ratio: 1.71;
   transform-origin: 75% 50%;
   transform-style: preserve-3d;
-  will-change: transform;
 }
 .back {
   position: absolute;
@@ -572,6 +571,28 @@ nav a[aria-current="true"] {
 }
 .folder.open .cover {
   transform: translateZ(1px) rotateY(-180deg);
+}
+.leftflat {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: var(--folder);
+  border-radius: var(--r) 0 0 var(--r);
+  display: none;
+}
+.folder.settled .leftflat {
+  display: block;
+}
+.folder.settled .cover {
+  visibility: hidden;
+}
+#folderL.settled {
+  perspective: none;
+}
+.folder.settled {
+  transform-style: flat;
 }
 .pages {
   visibility: hidden;
@@ -1358,6 +1379,9 @@ nav a[aria-current="true"] {
     right: 2.5%;
     border-radius: 0 0 var(--rs) var(--rs);
   }
+  .folder.settled .leftflat {
+    display: none;
+  }
   .cell,
   .cap {
     width: 280px;
@@ -1732,4 +1756,25 @@ html.rm .stamp {
   .menubtn {
     display: block;
   }
+}
+.raise {
+  position: fixed;
+  z-index: 70;
+  background: var(--paper);
+  border-radius: var(--rs);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  pointer-events: none;
+}
+.raise .txt {
+  padding: clamp(20px, 3.4vw, 48px);
+  transition: opacity 0.25s;
+}
+.raise h3 {
+  font-size: var(--f56);
+  margin-bottom: 24px;
+}
+.raise p {
+  margin: 0 0 16px;
+  max-width: 24em;
 }

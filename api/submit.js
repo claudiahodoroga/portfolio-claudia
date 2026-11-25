@@ -18,7 +18,6 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Missing Supabase environment variables" });
   }
 
-  
   try {
     const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body || {};
     const { blockers, contact, website } = body;
@@ -39,21 +38,29 @@ export default async function handler(req, res) {
       cleanContact = contact.trim().slice(0, 200) || null;
     }
 
+    // New Supabase keys (sb_publishable_..., sb_secret_...) only go in the apikey header.
+    // Sending them as "Authorization: Bearer" too makes Supabase reject the request as an invalid JWT.
+    // Legacy anon keys are JWTs (they start with "eyJ"), so those can also go in Authorization.
+    const headers = { apikey: supabaseKey, "Content-Type": "application/json", Prefer: "return=minimal" };
+    if (supabaseKey.startsWith("eyJ")) headers.Authorization = `Bearer ${supabaseKey}`;
+
     const response = await fetch(`${supabaseUrl}/rest/v1/form_responses`, {
       method: "POST",
-      headers: {
-        apikey: supabaseKey,
-        Authorization: `Bearer ${supabaseKey}`,
-        "Content-Type": "application/json",
-        Prefer: "return=minimal",
-      },
+      headers,
       body: JSON.stringify({ blockers: cleanBlockers, contact: cleanContact }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Supabase error", response.status, errorText);
-      return res.status(502).json({ error: "Could not save the response" });
+      let detail = errorText;
+      try {
+        detail = JSON.parse(errorText).message || errorText;
+      } catch {}
+      // The Supabase status and message show up in the browser's Network tab to make setup issues easy to spot
+      return res
+        .status(502)
+        .json({ error: "Could not save the response", supabaseStatus: response.status, detail });
     }
 
     return res.status(200).json({ ok: true });
