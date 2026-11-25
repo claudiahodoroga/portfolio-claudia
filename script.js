@@ -1,7 +1,5 @@
-/* Supabase: paste your Project URL and publishable key (Project Settings > API Keys).
-   The publishable key is safe in the browser; the table's security rules only allow inserting. */
-const SUPABASE_URL = "";
-const SUPABASE_KEY = "";
+/* Where the form sends responses: the Vercel function in api/submit.js */
+const FORM_ENDPOINT = "/api/submit";
 
 {
   const $ = (s) => document.querySelector(s),
@@ -559,6 +557,28 @@ const SUPABASE_KEY = "";
     current = k;
     $$("nav a").forEach((a) => a.setAttribute("aria-current", a.dataset.go === k));
   }
+  /* business card easter egg: a new line every time the card is flipped */
+  const cardLines = [
+    "Cat person. No further questions.",
+    "Either listening to Metallica or Lorde, no in-between.",
+    "Yes, I'll make a template for that.",
+    "Been working almost non-stop since I was 18.",
+    "I pack more expertise than my CV dates suggest.",
+    "Raised in a house where guests always left full.",
+    "My carrot cake has a bit of a reputation.",
+    "Happiest hosting a full table.",
+    "Part of me is still on a beach in Spain.",
+    "Raised in Spain, born into a Romanian family.",
+    "Moved 10+ times, and counting.",
+    "Working through every Agatha Christie I can find.",
+    "Obsessed with a good story, well told.",
+  ];
+  let lineI = Math.floor(Math.random() * cardLines.length);
+  function nextLine() {
+    lineI = (lineI + 1) % cardLines.length;
+    $("#cline").textContent = cardLines[lineI];
+  }
+  nextLine();
   function setFine(on, contact) {
     if (on && !fineL.classList.contains("on")) {
       fineL.classList.add("on");
@@ -568,6 +588,7 @@ const SUPABASE_KEY = "";
       fineL.classList.remove("on");
       stamps.forEach((s) => s.classList.remove("hit", "done"));
     }
+    if (contact && !fineL.classList.contains("contact")) nextLine();
     fineL.classList.toggle("contact", contact);
   }
   function update() {
@@ -775,15 +796,15 @@ const SUPABASE_KEY = "";
         msg.classList.add("err");
       });
   });
-  /* Saves one form response to Supabase. With no keys set it does nothing, so the page still works locally. */
+  /* Sends one form response to the Vercel function, which saves it to Supabase. */
   async function saveResponse(row) {
-    if (!SUPABASE_URL || !SUPABASE_KEY) return;
-    const r = await fetch(SUPABASE_URL + "/rest/v1/form_responses", {
+    if (!FORM_ENDPOINT) return;
+    const r = await fetch(FORM_ENDPOINT, {
       method: "POST",
-      headers: { apikey: SUPABASE_KEY, "Content-Type": "application/json", Prefer: "return=minimal" },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(row),
     });
-    if (!r.ok) throw new Error("Supabase returned " + r.status);
+    if (!r.ok) throw new Error("Form endpoint returned " + r.status);
   }
 
   /* trifold overlays: fold out of their trigger, refold on close */
@@ -876,14 +897,25 @@ const SUPABASE_KEY = "";
     playLoad();
   });
 
-/* Phones: keep "Experience Designer & Community Operations" on one line by shrinking it until it fits */
-function fitSub() {
-  const el = document.querySelector(".hero .sub");
-  el.style.fontSize = "";
-  if (innerWidth > 700) return;
-  let fs = parseFloat(getComputedStyle(el).fontSize);
-  while (el.scrollWidth > el.clientWidth && fs > 12) el.style.fontSize = (fs -= 0.5) + "px";
-}
-document.fonts.ready.then(fitSub);
-addEventListener("resize", fitSub);
+  /* Phones: keep "Experience Designer & Community Operations" on one line by shrinking it until it fits */
+  function fitSub() {
+    const el = document.querySelector(".hero .sub");
+    el.style.fontSize = "";
+    if (innerWidth > 700) return;
+    let fs = parseFloat(getComputedStyle(el).fontSize);
+    while (el.scrollWidth > el.clientWidth && fs > 12) el.style.fontSize = (fs -= 0.5) + "px";
+  }
+  document.fonts.ready.then(fitSub);
+  addEventListener("resize", fitSub);
+
+  /* The margin note lines up with the intro text, wherever the centred pair ends up */
+  function placeNote() {
+    const n = document.querySelector("#note");
+    n.style.left =
+      innerWidth > 700
+        ? Math.round(document.querySelector(".intro").getBoundingClientRect().left) + "px"
+        : "";
+  }
+  document.fonts.ready.then(placeNote);
+  addEventListener("resize", placeNote);
 }

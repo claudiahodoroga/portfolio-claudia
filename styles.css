@@ -179,8 +179,9 @@ nav a[aria-current="true"] {
   min-height: 100vh;
   min-height: 100svh;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(24px, 5vw, 72px);
+  grid-template-columns: auto minmax(0, 640px);
+  justify-content: center;
+  gap: clamp(56px, 7vw, 128px);
   align-items: center;
   padding: 92px var(--g) 72px;
   overflow: clip;
@@ -973,7 +974,7 @@ nav a[aria-current="true"] {
   transition: transform 1.2s cubic-bezier(0.6, 0, 0.2, 1);
 }
 #fineL.contact .flipper {
-  transform: translate(-50%, -50%) translateX(21vw) rotateY(180deg) scale(0.92);
+  transform: translate(-50%, -50%) translateX(min(21vw, 320px)) rotateY(180deg) scale(0.92);
 }
 .charter {
   background: var(--mint);
@@ -1059,6 +1060,14 @@ nav a[aria-current="true"] {
   margin: 6px 0 0;
   padding-right: 110px;
 }
+.cline {
+  font-family: var(--hand);
+  font-size: var(--f24);
+  margin-top: 10px;
+  transform: rotate(-1deg);
+  transform-origin: left;
+  color: #4a4a4a;
+}
 .card .clinks {
   margin-top: auto;
 }
@@ -1103,7 +1112,7 @@ nav a[aria-current="true"] {
 }
 .ctext {
   position: absolute;
-  left: var(--g);
+  left: max(var(--g), calc(50vw - 532px));
   top: calc(50% + 36px);
   width: min(520px, 38vw);
   transform: translate(-30px, -50%);
