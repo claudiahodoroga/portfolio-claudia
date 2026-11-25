@@ -938,37 +938,173 @@ const FORM_ENDPOINT = "/api/submit";
     document.body.appendChild(o);
     return o;
   }
-  $("#caseLink").addEventListener("click", (e) => {
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    e.preventDefault();
-    const href = e.currentTarget.getAttribute("href");
-    if (rm) {
-      location.href = href;
-      return;
-    }
-    const r = sheet.getBoundingClientRect(),
-      o = paperOverlay(r, true),
-      t = caseRect();
-    o.animate(
-      [
-        { transform: "none" },
-        { transform: "translateY(-10px) rotate(-.6deg)", boxShadow: "6px 16px 0 rgba(17,17,17,.16)" },
-      ],
-      { duration: 260, easing: "ease-out", fill: "forwards" },
-    )
-      .finished.then(() => {
+  const CASE_FILES = { "gdg.html": "gdg", "lfc.html": "lfc", "audits.html": "audit" };
+  const casev = $("#casev"),
+    cscroll = $("#cscroll"),
+    cpaper = $("#cpaper");
+  let caseOpen = null,
+    caseBusy = false,
+    casePushed = false;
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  async function loadCase(k) {
+    const res = await fetch(CASE_PAGES[k]);
+    const d = new DOMParser().parseFromString(await res.text(), "text/html");
+    d.querySelectorAll("[src]").forEach((el) => {
+      const v = el.getAttribute("src");
+      if (!/^(https?:|data:|\/)/.test(v))
+        el.setAttribute("src", v.startsWith("../") ? v.slice(3) : "work/" + v);
+    });
+    return { html: d.querySelector(".content").innerHTML, style: d.body.getAttribute("style") || "" };
+  }
+  function fillCase(d) {
+    casev.setAttribute("style", d.style);
+    cpaper.innerHTML = `<div class="content">${d.html}</div>`;
+    cscroll.scrollTop = 0;
+  }
+  async function openCase(k, instant) {
+    if (caseBusy || caseOpen) return;
+    caseBusy = true;
+    const dataP = loadCase(k),
+      mobile = innerWidth <= 700;
+    casev.hidden = false;
+    casev.classList.toggle("m", mobile);
+    document.body.style.overflow = "hidden";
+    if (!(rm || instant)) {
+      const r = sheet.getBoundingClientRect(),
+        o = paperOverlay(r, true);
+      sheet.style.visibility = "hidden";
+      if (mobile) {
+        const t = { left: 0, top: 0, width: document.documentElement.clientWidth, height: innerHeight };
         o.querySelector(".txt").style.opacity = 0;
-        return o.animate(
+        await o.animate([{ ...px(r) }, { ...px(t), borderRadius: "0" }], {
+          duration: 450,
+          easing: "cubic-bezier(.6,0,.2,1)",
+          fill: "forwards",
+        }).finished;
+      } else {
+        await o.animate(
+          [
+            { transform: "none" },
+            { transform: "translateY(-10px) rotate(-.6deg)", boxShadow: "6px 16px 0 rgba(17,17,17,.16)" },
+          ],
+          { duration: 260, easing: "ease-out", fill: "forwards" },
+        ).finished;
+        o.querySelector(".txt").style.opacity = 0;
+        casev.classList.add("bg");
+        await o.animate(
           [
             { ...px(r), transform: "translateY(-10px) rotate(-.6deg)" },
-            { ...px(t), transform: "none", boxShadow: "3px 6px 0 rgba(17,17,17,.18)" },
+            { ...px(caseRect()), transform: "none", boxShadow: "3px 6px 0 rgba(17,17,17,.18)" },
           ],
           { duration: 620, easing: "cubic-bezier(.6,0,.2,1)", fill: "forwards" },
         ).finished;
-      })
-      .then(() => {
-        location.href = href;
-      });
+      }
+      fillCase(await dataP);
+      casev.classList.add("bg", "show");
+      o.remove();
+    } else {
+      fillCase(await dataP);
+      sheet.style.visibility = "hidden";
+      casev.classList.add("bg", "show");
+    }
+    caseOpen = k;
+    if (!instant) {
+      history.pushState({ case: k }, "", "#case-" + k);
+      casePushed = true;
+    }
+    casev.querySelector(".cback").focus({ preventScroll: true });
+    caseBusy = false;
+  }
+  async function closeCase() {
+    if (caseBusy || !caseOpen) return;
+    caseBusy = true;
+    const mobile = casev.classList.contains("m");
+    if (!rm) {
+      casev.classList.add("leaving");
+      await wait(200);
+    }
+    const pr = cpaper.getBoundingClientRect(),
+      top = Math.max(pr.top, 0);
+    const from = mobile
+      ? { left: 0, top: 0, width: document.documentElement.clientWidth, height: innerHeight }
+      : { left: pr.left, top, width: pr.width, height: innerHeight - top + 8 };
+    const r = sheet.getBoundingClientRect();
+    if (!rm) {
+      const o = paperOverlay(from, true);
+      if (mobile) o.classList.add("full");
+      const tx = o.querySelector(".txt");
+      tx.style.opacity = 0;
+      casev.classList.remove("show", "leaving");
+      casev.classList.remove("bg");
+      await o.animate([{ ...px(from) }, { ...px(r), borderRadius: "2px" }], {
+        duration: mobile ? 420 : 620,
+        easing: "cubic-bezier(.6,0,.2,1)",
+        fill: "forwards",
+      }).finished;
+      tx.style.opacity = 1;
+      sheet.style.visibility = "";
+      await wait(120);
+      await o.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, fill: "forwards" }).finished;
+      o.remove();
+    } else sheet.style.visibility = "";
+    casev.hidden = true;
+    casev.classList.remove("show", "bg", "leaving", "m");
+    cpaper.innerHTML = "";
+    document.body.style.overflow = "";
+    caseOpen = null;
+    caseBusy = false;
+    $("#caseLink").focus({ preventScroll: true });
+  }
+  $("#caseLink").addEventListener("click", (e) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    openCase(curTab);
+  });
+  casev.addEventListener("click", async (e) => {
+    const back = e.target.closest("[data-back]");
+    if (back) {
+      e.preventDefault();
+      if (casePushed) {
+        casePushed = false;
+        history.back();
+      } else {
+        history.replaceState(null, "", location.pathname);
+        closeCase();
+      }
+      return;
+    }
+    const a = e.target.closest("a[href]");
+    if (!a) return;
+    const k = CASE_FILES[(a.getAttribute("href") || "").split("/").pop()];
+    if (k && !e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      casev.classList.add("leaving");
+      const d = await loadCase(k);
+      await wait(200);
+      setTab(k);
+      fillCase(d);
+      casev.classList.remove("leaving");
+      caseOpen = k;
+      history.replaceState({ case: k }, "", "#case-" + k);
+    }
+  });
+  addEventListener("popstate", () => {
+    if (caseOpen && !location.hash.startsWith("#case-")) closeCase();
+    else if (!caseOpen) {
+      const m = location.hash.match(/^#case-(gdg|lfc|audit)$/);
+      if (m) {
+        setTab(m[1]);
+        openCase(m[1]);
+      }
+    }
+  });
+  addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && caseOpen) {
+      if (casePushed) {
+        casePushed = false;
+        history.back();
+      } else closeCase();
+    }
   });
   /* Coming back from a case study (index.html#work-gdg): open the folder on that file and shrink the paper back into it */
   function returnFromCase() {
@@ -995,10 +1131,18 @@ const FORM_ENDPOINT = "/api/submit";
   addEventListener("pageshow", (e) => {
     if (e.persisted) $$(".raise").forEach((o) => o.remove());
   });
+  function openFromHash() {
+    const m = location.hash.match(/^#case-(gdg|lfc|audit)$/);
+    if (!m) return;
+    setTab(m[1]);
+    jumpTo(target("work"), "work");
+    openCase(m[1], true);
+  }
   document.fonts.ready.then(() => {
     layout();
     playLoad();
     returnFromCase();
+    openFromHash();
   });
 
   /* Phones: keep "Experience Designer & Community Operations" on one line by shrinking it until it fits */

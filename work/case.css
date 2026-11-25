@@ -76,12 +76,12 @@ a {
   border-radius: var(--rs);
   background: var(--accent);
 }
-.back {
+.cback {
   font-size: var(--f24);
   text-decoration: none;
   padding: 6px 0;
 }
-.back:hover {
+.cback:hover {
   text-decoration: underline;
   text-underline-offset: 6px;
 }
@@ -134,19 +134,34 @@ a {
   transform: translateY(14px);
   animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
-.content > *:nth-child(2) { animation-delay: 0.08s; }
-.content > *:nth-child(3) { animation-delay: 0.16s; }
-.content > *:nth-child(4) { animation-delay: 0.24s; }
-.content > *:nth-child(n + 5) { animation-delay: 0.32s; }
+.content > *:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.content > *:nth-child(3) {
+  animation-delay: 0.16s;
+}
+.content > *:nth-child(4) {
+  animation-delay: 0.24s;
+}
+.content > *:nth-child(n + 5) {
+  animation-delay: 0.32s;
+}
 @keyframes rise {
-  to { opacity: 1; transform: none; }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 body.leaving .content {
   opacity: 0;
   transition: opacity 0.2s;
 }
 @media (prefers-reduced-motion: reduce) {
-  .content > * { animation: none; opacity: 1; transform: none; }
+  .content > * {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* header */
@@ -185,7 +200,11 @@ h2 {
   opacity: 0.9;
 }
 @media (max-width: 700px) {
-  .stamp { position: static; display: inline-block; margin: 0 0 14px; }
+  .stamp {
+    position: static;
+    display: inline-block;
+    margin: 0 0 14px;
+  }
 }
 .facts {
   display: grid;
@@ -206,7 +225,9 @@ h2 {
   font-weight: 700;
 }
 @media (max-width: 700px) {
-  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 /* sections */
@@ -240,9 +261,18 @@ section {
   border-radius: 999px;
   background: rgba(17, 17, 17, 0.07);
 }
-.state[data-state="done"] { background: #d3ead8; color: #173b26; }
-.state[data-state="wip"] { background: #fbe9bf; color: #5a3d05; }
-.state[data-state="soon"] { background: rgba(17, 17, 17, 0.07); color: #444; }
+.state[data-state="done"] {
+  background: #d3ead8;
+  color: #173b26;
+}
+.state[data-state="wip"] {
+  background: #fbe9bf;
+  color: #5a3d05;
+}
+.state[data-state="soon"] {
+  background: rgba(17, 17, 17, 0.07);
+  color: #444;
+}
 .part {
   margin-top: 72px;
   padding-top: 18px;
@@ -320,7 +350,9 @@ figcaption {
   line-height: 1.1;
 }
 @media (max-width: 700px) {
-  .metrics { grid-template-columns: 1fr; }
+  .metrics {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* footer */
