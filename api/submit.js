@@ -1,7 +1,8 @@
 // Vercel serverless function: receives the landing-page form and saves it to Supabase.
-// Needs two environment variables in Vercel (Settings > Environment Variables):
-//   SUPABASE_URL  e.g. https://abcdefgh.supabase.co
-//   SUPABASE_KEY  your Supabase publishable (or legacy anon) key
+// Uses the environment variables Vercel's Supabase integration creates:
+//   SUPABASE_URL         your project URL
+//   SUPABASE_SECRET_KEY  server-only key (preferred: this code runs on Vercel, never in the browser)
+// It falls back to the service role, publishable or anon key if the secret key isn't set.
 
 const ALLOWED = ["team-momentum", "event-shape", "docs-processes"];
 
@@ -11,8 +12,18 @@ export default async function handler(req, res) {
   }
 
   const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey =
-    process.env.SUPABASE_KEY || process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  // First one that exists wins. Server-side keys come first so the table's row-level security can't block inserts.
+  const keyNames = [
+    "SUPABASE_SECRET_KEY",
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "SUPABASE_KEY",
+    "SUPABASE_PUBLISHABLE_KEY",
+    "SUPABASE_ANON_KEY",
+    "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+  ];
+  const keyName = keyNames.find((n) => process.env[n]);
+  const supabaseKey = keyName && process.env[keyName];
 
   if (!supabaseUrl || !supabaseKey) {
     return res.status(500).json({ error: "Missing Supabase environment variables" });
@@ -52,7 +63,7 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("Supabase error", response.status, errorText);
+      console.error("Supabase error", response.status, errorText, "key:", keyName);
       let detail = errorText;
       try {
         detail = JSON.parse(errorText).message || errorText;
@@ -60,7 +71,7 @@ export default async function handler(req, res) {
       // The Supabase status and message show up in the browser's Network tab to make setup issues easy to spot
       return res
         .status(502)
-        .json({ error: "Could not save the response", supabaseStatus: response.status, detail });
+        .json({ error: "Could not save the response", supabaseStatus: response.status, detail, keyUsed: keyName });
     }
 
     return res.status(200).json({ ok: true });
