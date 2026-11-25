@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claudia Hodoroga · Experience Designer & Community Operations</title>
+<meta name="description" content="Experience Designer and Community Operations. I build the systems, workflows and environments that bring technical communities and products alive.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Patrick+Hand&family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css"></style>
+</head>
+<body>
+<nav id="nav">
+ <button class="logo" id="logo" aria-label="Back to top and replay confetti"></button>
+ <a href="#work" data-go="work">Work</a><a href="#sandbox" data-go="sandbox">Sandbox</a><a href="#sops" data-go="fine">SOPs</a><a href="#contact" data-go="contact">Let's chat!</a><a href="cv.pdf" id="cvlink">CV</a><button class="menubtn" id="menubtn" aria-haspopup="dialog">Menu</button>
+</nav>
+
+
+
+<header class="hero" id="top" data-mode="stagger">
+ <canvas id="confetti" aria-hidden="true"></canvas>
+ <div class="intro">
+  <h1 class="ld">Claudia Hodoroga</h1>
+  <div class="sub ld">Experience Designer &amp; <br>Community Operations</div>
+  <p class="ld">I build the systems, workflows and environments that bring technical communities and products alive.</p>
+  <p class="ld">I speak the language of builders, engineers, designers, and product teams.</p>
+ </div>
+ <form class="form" id="form" novalidate>
+  <h2>What's blocking your project's potential?</h2>
+  <p class="fsub">I'm collecting the problems that really hold teams back. Add your contact if you'd like to keep talking. If you leave it blank, I won't reach out.</p>
+  <label class="opt"><input type="checkbox" name="need" value="team-momentum" data-tab="gdg"><span class="box" aria-hidden="true"><svg viewBox="0 0 30 30"><path d="M5 15c3 3 5 7 6 10 4-9 9-16 15-22" fill="none" stroke="#1D2A4D" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>My team or community keeps losing momentum</span></label>
+  <label class="opt"><input type="checkbox" name="need" value="event-shape" data-tab="lfc"><span class="box" aria-hidden="true"><svg viewBox="0 0 30 30"><path d="M5 15c3 3 5 7 6 10 4-9 9-16 15-22" fill="none" stroke="#1D2A4D" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>My event or experience feels shapeless or flat</span></label>
+  <label class="opt"><input type="checkbox" name="need" value="docs-processes" data-tab="audit"><span class="box" aria-hidden="true"><svg viewBox="0 0 30 30"><path d="M5 15c3 3 5 7 6 10 4-9 9-16 15-22" fill="none" stroke="#1D2A4D" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>My docs and processes are a maze/nonexistent</span></label>
+  <div class="sign">
+   <div><label for="contactIn">Signed:</label><input id="contactIn" name="contact" type="text" placeholder="your contact" autocomplete="email" maxlength="200"></div>
+   <button class="btn" type="submit">Submit form</button>
+  </div>
+  <div class="hp" aria-hidden="true"><label>Leave this empty <input name="website" tabindex="-1" autocomplete="off"></label></div>
+  <div class="msg" id="msg" role="status"></div>
+  <div class="stamp" id="fstamp" aria-hidden="true">RECEIVED</div>
+ </form>
+ <div class="note" id="note">(I'll sweep this up later)</div>
+</header>
+
+
+<div class="tri" id="cv" role="dialog" aria-modal="true" aria-label="Claudia Hodoroga, CV" hidden>
+ <div class="cvbg"></div>
+ <div class="cvwrap">
+  <div class="cvpaper">
+   <div class="cvp top" aria-hidden="true"><div class="cvf"><div class="cvc"></div></div><div class="cvb"></div></div>
+   <div class="cvp mid" aria-hidden="true"><div class="cvc"></div></div>
+   <div class="cvp bot" aria-hidden="true"><div class="cvf"><div class="cvc"></div></div><div class="cvb"></div></div>
+   <div class="flat"><div class="cvc"></div></div>
+  </div>
+  <div class="cvact"><a class="btn" href="cv.pdf" download>Download PDF</a><button class="cvx">Close</button></div>
+ </div>
+</div>
+<div class="tri" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+ <div class="cvbg"></div>
+ <div class="cvwrap">
+  <div class="cvpaper">
+   <div class="cvp top" aria-hidden="true"><div class="cvf"><div class="cvc"></div></div><div class="cvb"></div></div>
+   <div class="cvp mid" aria-hidden="true"><div class="cvc"></div></div>
+   <div class="cvp bot" aria-hidden="true"><div class="cvf"><div class="cvc"></div></div><div class="cvb"></div></div>
+   <div class="flat"><div class="cvc"></div></div>
+  </div>
+  <div class="cvact"><button class="cvx">Close</button></div>
+ </div>
+</div>
+<template id="menutpl"><div class="cvin mlinks"><a href="#work" data-go="work">Work</a><a href="#sandbox" data-go="sandbox">Sandbox</a><a href="#sops" data-go="fine">SOPs</a><a href="#contact" data-go="contact">Let's chat!</a><a class="btn" href="cv.pdf" download>Download CV</a></div></template>
+<template id="cvtpl"><div class="cvin">
+ <div class="cvh"><div><b>Claudia Hodoroga</b>Experience Designer &amp; Community Operations</div><div class="r">contact.hodoroga@gmail.com<br>LinkedIn · GitHub<br>Dublin, relocating to Zurich</div></div>
+ <div class="cvs"><span>Profile</span><div><p>I build the systems, workflows and environments that bring technical communities and products alive. I speak the language of builders, engineers, designers, and product teams.</p></div></div>
+ <div class="cvs"><span>Experience</span><div>
+  <h4>Customer Success &amp; Technical Support</h4><div class="m">Pharmacy software (PMR) · Dublin · 20XX to present</div><p>Supporting Irish pharmacies on PMR software and writing the documentation behind it.</p>
+  <h4>Frontend &amp; UX Intern</h4><div class="m">Digital product passport startup · 20XX</div><p>Frontend and UX work on a digital product passport platform.</p>
+  <h4>Retail</h4><div class="m">20XX to 20XX</div><p>Customer-facing work.</p>
+ </div></div>
+ <div class="cvs"><span>Community</span><div>
+  <h4>Organizer, GDG Girona</h4><div class="m">20XX to present</div><p>Co-organizing events including DevFest; redesigning the team's structure and event planning process.</p>
+  <h4>Research &amp; Experience Design, Liffey Founders' Club</h4><div class="m">Dublin · 20XX to present</div><p>Attendee research, journey mapping and event format design.</p>
+  <h4>Student Auditor ×2</h4><div class="m">Official videogame degree accreditations</div><p>Inspected dense documentation, interviewed stakeholders and flagged gaps before approval.</p>
+ </div></div>
+ <div class="cvs"><span>Education</span><div><h4>Videogame Design &amp; Development</h4><div class="m">University · 20XX</div></div></div>
+ <div class="cvs"><span>Skills</span><div><p>Experience design · Event operations · Program coordination · Technical documentation · Stakeholder interviews · Obsidian · Figma · HTML, CSS, JavaScript</p></div></div>
+</div></template>
+
+<section id="seq" aria-label="Work, sandbox, SOPs and contact">
+ <div class="stage">
+  <div class="layer" id="folderL">
+   <div class="fsh" id="fsh"><i class="l"></i><i class="r"></i></div>
+   <div class="folder" id="folder">
+    <div class="back">
+     <div class="divider" id="divider">
+     <div class="pages" id="pages">
+      <div class="desk"></div>
+      <div class="brk" id="brk"><svg width="22" height="50" viewBox="0 0 26 60" aria-hidden="true"><path d="M8 52V12a5 5 0 0 1 10 0v38a8 8 0 0 1-16 0V16" fill="none" stroke="rgba(17,17,17,.45)" stroke-width="4.4" stroke-linecap="round"/><path d="M8 52V12a5 5 0 0 1 10 0v38a8 8 0 0 1-16 0V16" fill="none" stroke="#F1F2F4" stroke-width="2.4" stroke-linecap="round"/></svg><h3>Full project breakdown</h3><p>Research, scope, execution and post-mortem.</p><a class="btn" href="#work">View case study</a></div>
+     </div>
+     </div>
+     <div class="tabs" role="tablist" id="tabs"></div>
+    </div>
+    <div class="cover" id="cover">
+     <div class="face"><div class="sticker">WORK</div></div>
+     <div class="inside" id="inside">
+      <article class="sheet" id="sheet" role="tabpanel"><div class="txt" id="sheetTxt"></div><div class="holes" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+     </div>
+    </div>
+   </div>
+  </div>
+  <div class="layer vig" id="vig"></div>
+  <div class="layer shade" id="shade"></div>
+  <div class="layer" id="reelL" aria-label="Sandbox reel">
+   <div class="reel" id="reel"></div>
+   <div class="reel" id="caps"></div>
+   <div class="reelhint" id="reelhint">keep scrolling to see side projects</div>
+  </div>
+  <div class="layer" id="fineL">
+   <div class="slot">
+    <div class="flipper" id="flipper">
+     <div class="charter" id="charter">
+      <h2>Standard Operating Procedures</h2>
+      <p class="subt">The fine print I actually follow.</p>
+      <div class="rules" id="rules"></div>
+     </div>
+     <div class="cardface">
+      <div class="card" id="card">
+       <div class="photo"><svg width="20" height="44" viewBox="0 0 26 60" aria-hidden="true"><path d="M8 52V12a5 5 0 0 1 10 0v38a8 8 0 0 1-16 0V16" fill="none" stroke="rgba(17,17,17,.45)" stroke-width="4.4" stroke-linecap="round"/><path d="M8 52V12a5 5 0 0 1 10 0v38a8 8 0 0 1-16 0V16" fill="none" stroke="#F1F2F4" stroke-width="2.4" stroke-linecap="round"/></svg><div>your photo</div></div>
+       <h3>Claudia Hodoroga</h3>
+       <div class="ctitle">Experience Designer &amp;<br>Community Operations</div>
+       <div class="clinks"><span>contact.hodoroga@gmail.com</span><a href="#contact">LinkedIn</a><a href="#contact">GitHub</a></div>
+       <a class="btn" href="#contact">Book a coffee chat</a>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="ctext" id="ctext">
+    <h2>Let's organize something fun!</h2>
+    <div>I'm currently:</div>
+    <ul><li>Working in Dublin.</li><li>Looking to relocate to Zurich.</li><li>Searching for opportunities in Product, Operations, Community Management, or Program Coordination.</li></ul>
+    <p>If you're building a technical community or a product team, I'd love to hop on a quick 15-minute call.</p>
+   </div>
+  </div>
+ </div>
+</section>
+
+<script src="script.js" defer></script>
+</body>
+</html>
