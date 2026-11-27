@@ -1,0 +1,4 @@
+node_modules/
+assets/raw/
+.vercel
+.DS_Store

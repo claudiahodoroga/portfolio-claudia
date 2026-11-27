@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Claudia Hodoroga · Experience Designer & Community Operations</title>
+    <meta
+      name="description"
+      content="Experience Designer and Community Operations. I build the systems, workflows and events that keep technical communities and product teams running."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <nav id="nav" aria-label="Main">
+      <a href="cv.pdf" class="cvlink" id="cvlink">CV</a>
+      <span class="links"
+        ><a href="#work" data-go="work">Work</a><a href="#sandbox" data-go="sandbox">Sandbox</a
+        ><a href="#rules" data-go="rules">House rules</a></span
+      >
+      <button class="menubtn" id="menubtn" aria-haspopup="dialog">Menu</button>
+      <a href="#contact" class="cta" id="cta">Let's chat</a>
+    </nav>
+
+    <main>
+      <div id="workwrap">
+        <section class="stage" id="work" aria-label="Work">
+          <div class="zoomer" id="zoomer">
+            <div class="scene" id="scene">
+              <div class="folder" id="folder">
+                <div class="back mat m-folder"><div class="files" id="files"></div></div>
+                <div class="leftflat mat m-folder" id="leftflat"></div>
+                <div class="cover" id="cover">
+                  <div class="face mat m-folder">
+                    <div class="nlabel">
+                      <div class="hb"><b>HELLO</b><span>my name is</span></div>
+                      <div class="hw">
+                        <strong>Claudia Hodoroga</strong
+                        ><small>Experience Designer &amp; Community Operations</small>
+                      </div>
+                    </div>
+                    <img
+                      class="pencil"
+                      src="assets/notes/note-folder.png"
+                      alt="Select a tab to open the folder"
+                    />
+                  </div>
+                  <div class="inside mat m-folder" id="inside"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="closem" id="closem">
+            <img src="assets/notes/note-close.png" alt="Close the folder" />
+          </button>
+          <div class="fade vig" id="vig"></div>
+          <div class="fade shade" id="shade"></div>
+        </section>
+      </div>
+      <template id="indextpl"
+        ><div class="index">
+          <span class="label">Index</span>
+          <ol id="indexlist"></ol></div
+      ></template>
+
+      <section id="sandbox" aria-labelledby="sbx-t">
+        <div class="sbx-head">
+          <h2 id="sbx-t">Sandbox</h2>
+          <p>Side projects and experiments.</p>
+        </div>
+        <div class="rows" id="grid"></div>
+      </section>
+      <div class="edge top" aria-hidden="true"></div>
+      <div class="edge bot" aria-hidden="true"></div>
+      <div class="vign" aria-hidden="true"></div>
+
+      <section id="rules" aria-labelledby="rules-t">
+        <div class="field mat" id="field" aria-hidden="true"></div>
+        <div class="rules-in">
+          <div class="rhead rv">
+            <div>
+              <h2 id="rules-t">House rules</h2>
+              <p class="sub">A few house rules before we work together.</p>
+            </div>
+          </div>
+          <ol class="rlist" id="rlist"></ol>
+        </div>
+      </section>
+
+      <section id="contact" aria-labelledby="rsvp-t">
+        <div class="rsvp" id="rsvp">
+          <form class="invite mat m-sheet" id="form" novalidate>
+            <span class="emboss" id="emboss" aria-hidden="true"></span>
+            <div class="ihead">
+              <span class="label">RSVP</span>
+              <h2 id="rsvp-t">You're invited to a chat with me.</h2>
+              <p class="acc">It's up to you to accept.</p>
+            </div>
+            <div class="sprig" aria-hidden="true"></div>
+            <p class="looking">
+              <span class="label">Open to</span>Roles in product operations, community management and program
+              coordination
+            </p>
+            <div class="sprig" aria-hidden="true"></div>
+            <fieldset class="qs">
+              <legend>What's slowing your team down?</legend>
+              <p class="q">
+                I'm collecting the problems that hold teams back. Sign with your contact if you'd like to talk
+                about yours, or leave it blank to share anonymously.
+              </p>
+              <label class="opt"
+                ><input type="checkbox" name="need" value="team-momentum" /><span
+                  class="box"
+                  aria-hidden="true"
+                  ><svg viewBox="0 0 20 20">
+                    <path
+                      d="M4 10.5c2 1.8 3.2 4 3.8 5.6C10.4 10.4 13.4 6 17 2.8"
+                      fill="none"
+                      stroke="#141414"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    /></svg></span
+                ><span>My team or community keeps losing momentum</span></label
+              >
+              <label class="opt"
+                ><input type="checkbox" name="need" value="event-shape" /><span class="box" aria-hidden="true"
+                  ><svg viewBox="0 0 20 20">
+                    <path
+                      d="M4 10.5c2 1.8 3.2 4 3.8 5.6C10.4 10.4 13.4 6 17 2.8"
+                      fill="none"
+                      stroke="#141414"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    /></svg></span
+                ><span>My event feels flat or shapeless</span></label
+              >
+              <label class="opt"
+                ><input type="checkbox" name="need" value="docs-processes" /><span
+                  class="box"
+                  aria-hidden="true"
+                  ><svg viewBox="0 0 20 20">
+                    <path
+                      d="M4 10.5c2 1.8 3.2 4 3.8 5.6C10.4 10.4 13.4 6 17 2.8"
+                      fill="none"
+                      stroke="#141414"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    /></svg></span
+                ><span>My docs and processes are a maze, or missing</span></label
+              >
+            </fieldset>
+            <div class="sign">
+              <label for="contactIn">Signed</label>
+              <input
+                id="contactIn"
+                name="contact"
+                type="text"
+                placeholder="Your email or LinkedIn (optional)"
+                autocomplete="email"
+                maxlength="200"
+              />
+              <button class="btn" type="submit">Send</button>
+            </div>
+            <div class="hp" aria-hidden="true">
+              <label>Leave this empty <input name="website" tabindex="-1" autocomplete="off" /></label>
+            </div>
+            <div class="msg" id="msg" role="alert"></div>
+            <span class="srmsg" id="srmsg" role="status"></span>
+            <div class="stamp" id="fstamp" aria-hidden="true">RECEIVED, THANKS!</div>
+          </form>
+          <div class="bcwrap" id="bcwrap">
+            <button class="tuckbtn" id="tuckbtn" hidden>Tuck the card away</button>
+            <div class="bstage" id="bstage">
+              <div class="bcard" id="bcard">
+                <div class="bface bfront mat m-card" id="about">
+                  <h2 class="foil">
+                    <span class="press" aria-hidden="true">Claudia Hodoroga</span
+                    ><span class="ink">Claudia Hodoroga</span>
+                  </h2>
+                  <div class="ptitle">Experience Designer &amp; Community Operations</div>
+                  <button class="flipbtn deb" id="flipbtn" aria-pressed="false">Flip</button>
+                  <div class="links2">
+                    <a class="deb" href="mailto:contact.hodoroga@gmail.com">contact.hodoroga@gmail.com</a
+                    ><a
+                      class="deb"
+                      href="https://www.linkedin.com/in/claudiahodoroga/"
+                      target="_blank"
+                      rel="noopener"
+                      >LinkedIn</a
+                    ><a class="deb" href="https://github.com/claudiahodoroga" target="_blank" rel="noopener"
+                      >GitHub</a
+                    >
+                  </div>
+                </div>
+                <div class="bface bback mat m-card" aria-live="polite">
+                  <p class="oneliner emb" id="cline"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer><span class="label">© Claudia Hodoroga</span></footer>
+      </section>
+    </main>
+    <canvas id="fx" aria-hidden="true"></canvas>
+
+    <div class="tri" id="cv" role="dialog" aria-modal="true" aria-label="Claudia Hodoroga, CV" hidden>
+      <div class="cvbg"></div>
+      <div class="cvwrap">
+        <div class="cvpaper">
+          <div class="cvp top" aria-hidden="true">
+            <div class="cvf mat m-sheet"><div class="cvc"></div></div>
+            <div class="cvb"></div>
+          </div>
+          <div class="cvp mid mat m-sheet" aria-hidden="true"><div class="cvc"></div></div>
+          <div class="cvp bot" aria-hidden="true">
+            <div class="cvf mat m-sheet"><div class="cvc"></div></div>
+            <div class="cvb"></div>
+          </div>
+          <div class="flat mat m-sheet"><div class="cvc"></div></div>
+        </div>
+        <div class="cvact">
+          <a class="btn" href="cv.pdf" download>Download PDF</a><button class="cvx">Close</button>
+        </div>
+      </div>
+    </div>
+    <div class="tri" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+      <div class="cvbg"></div>
+      <div class="cvwrap">
+        <div class="cvpaper">
+          <div class="cvp top" aria-hidden="true">
+            <div class="cvf mat m-sheet"><div class="cvc"></div></div>
+            <div class="cvb"></div>
+          </div>
+          <div class="cvp mid mat m-sheet" aria-hidden="true"><div class="cvc"></div></div>
+          <div class="cvp bot" aria-hidden="true">
+            <div class="cvf mat m-sheet"><div class="cvc"></div></div>
+            <div class="cvb"></div>
+          </div>
+          <div class="flat mat m-sheet"><div class="cvc"></div></div>
+        </div>
+        <div class="cvact"><button class="cvx">Close</button></div>
+      </div>
+    </div>
+    <template id="menutpl"
+      ><div class="cvin mlinks">
+        <a href="#work" data-go="work">Work</a><a href="#sandbox" data-go="sandbox">Sandbox</a
+        ><a href="#rules" data-go="rules">House rules</a><a href="#contact" data-go="contact">Let's chat</a
+        ><a class="btn" href="cv.pdf" download>Download CV</a>
+      </div></template
+    >
+    <template id="cvtpl"
+      ><div class="cvin">
+        <div class="cvh">
+          <div><b>Claudia Hodoroga</b>Experience Designer &amp; Community Operations</div>
+          <div class="r">
+            contact.hodoroga@gmail.com<br /><a
+              href="https://www.linkedin.com/in/claudiahodoroga/"
+              target="_blank"
+              rel="noopener"
+              >LinkedIn</a
+            >
+            · <a href="https://github.com/claudiahodoroga" target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </div>
+        <figure class="cvpic">
+          <img src="assets/images/profile/me-600.webp" alt="Portrait of Claudia Hodoroga" /><img
+            class="clip"
+            src="assets/textures/objects/paperclip.png"
+            alt=""
+          />
+        </figure>
+        <div class="cvs">
+          <span>Profile</span>
+          <div>
+            <p>
+              I build the systems, workflows and events that keep technical communities and product teams
+              running. I work comfortably between engineers, designers and product teams.
+            </p>
+          </div>
+        </div>
+        <div class="cvs">
+          <span>Experience</span>
+          <div>
+            <h4>Customer Success &amp; Technical Support</h4>
+            <div class="m">Pharmacy software (PMR) · Dublin · 20XX to present</div>
+            <p>Supporting Irish pharmacies on PMR software and writing the documentation behind it.</p>
+            <h4>Frontend &amp; UX Intern</h4>
+            <div class="m">Digital product passport startup · 20XX</div>
+            <p>Frontend and UX work on a digital product passport platform.</p>
+            <h4>Retail</h4>
+            <div class="m">20XX to 20XX</div>
+            <p>Customer-facing work.</p>
+          </div>
+        </div>
+        <div class="cvs">
+          <span>Community</span>
+          <div>
+            <h4>Organizer, GDG Girona</h4>
+            <div class="m">20XX to present</div>
+            <p>
+              Co-organizing events including DevFest; redesigning the team's structure and event planning
+              process.
+            </p>
+            <h4>Research &amp; Experience Design, Liffey Founders' Club</h4>
+            <div class="m">Dublin · 20XX to present</div>
+            <p>Attendee research, journey mapping and event format design.</p>
+            <h4>Student Auditor ×2</h4>
+            <div class="m">Official videogame degree accreditations</div>
+            <p>Inspected dense documentation, interviewed stakeholders and flagged gaps before approval.</p>
+          </div>
+        </div>
+        <div class="cvs">
+          <span>Education</span>
+          <div>
+            <h4>Videogame Design &amp; Development</h4>
+            <div class="m">University · 20XX</div>
+          </div>
+        </div>
+        <div class="cvs">
+          <span>Skills</span>
+          <div>
+            <p>
+              Experience design · Event operations · Program coordination · Technical documentation ·
+              Stakeholder interviews · Obsidian · Figma · HTML, CSS, JavaScript
+            </p>
+          </div>
+        </div>
+      </div></template
+    >
+
+    <div class="casev" id="casev" role="dialog" aria-modal="true" aria-label="Case study" hidden>
+      <div class="cbg"></div>
+      <div class="cscroll" id="cscroll">
+        <nav class="cnav">
+          <a class="logo" href="index.html" aria-label="Home"></a
+          ><a class="cback" href="#work" data-back>Back to the folder</a>
+        </nav>
+        <div class="pshadow"><main class="paper" id="cpaper"></main></div>
+      </div>
+    </div>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>

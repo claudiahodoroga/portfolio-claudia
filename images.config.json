@@ -1,0 +1,92 @@
+{
+  "groups": {
+    "profile": {
+      "kind": "photo",
+      "ratio": "4:5",
+      "position": "attention",
+      "widths": [
+        600,
+        1200
+      ]
+    },
+    "gdg": {
+      "kind": "photo",
+      "ratio": "3:2"
+    },
+    "lfc": {
+      "kind": "photo",
+      "ratio": "3:2"
+    },
+    "audits": {
+      "kind": "screen",
+      "ratio": "16:10",
+      "position": "top"
+    },
+    "sandbox": {
+      "kind": "photo",
+      "ratio": "4:5"
+    }
+  },
+  "files": {
+    "LFC.jpg": {
+      "ratio": "3:2",
+      "position": [
+        45,
+        55
+      ]
+    },
+    "LFC-vertical.jpg": {
+      "ratio": "4:5",
+      "position": [
+        55,
+        52
+      ]
+    },
+    "study-notes-history.jpg": {
+      "kind": "photo",
+      "ratio": "3:2",
+      "position": "centre"
+    },
+    "study-notes-diagrams.jpg": {
+      "kind": "photo",
+      "ratio": "4:5",
+      "position": "centre"
+    },
+    "desk.jpg": {
+      "kind": "photo",
+      "ratio": "16:9",
+      "position": "centre",
+      "widths": [
+        1200,
+        2400
+      ]
+    },
+    "citm.jpg": {
+      "kind": "photo",
+      "ratio": "4:3",
+      "position": "centre",
+      "widths": [
+        900,
+        1800
+      ]
+    },
+    "tech.jpg": {
+      "kind": "photo",
+      "ratio": "4:3",
+      "position": "centre",
+      "widths": [
+        900,
+        1800
+      ]
+    },
+    "vault.jpg": {
+      "kind": "screen",
+      "ratio": "16:9",
+      "position": "centre",
+      "widths": [
+        1200,
+        2400
+      ]
+    }
+  }
+}
