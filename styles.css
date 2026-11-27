@@ -250,10 +250,10 @@ nav a[aria-current="true"] {
   perspective: none;
 }
 .folder {
-  --fw: min(84vw, 1240px, calc((100vh - 200px) * 1.71));
+  --fw: min(84vw, 1240px, calc((100vh - 140px) * 1.71));
   position: absolute;
   left: 50%;
-  top: 47%;
+  top: calc(50% + 30px);
   width: var(--fw);
   aspect-ratio: 1.71;
   transform: translate(-50%, -50%) translateX(var(--shift));
@@ -338,7 +338,7 @@ nav a[aria-current="true"] {
 /* name label: a "HELLO my name is" vinyl sticker */
 .nlabel {
   position: relative;
-  width: 60%;
+  width: 46%;
   padding: clamp(8px, 0.9vw, 12px) clamp(8px, 0.9vw, 12px) clamp(10px, 1.1vw, 14px);
   background: #c8323f;
   border-radius: clamp(10px, 1.1vw, 16px);
@@ -360,12 +360,12 @@ nav a[aria-current="true"] {
 }
 .hb b {
   display: block;
-  font: 800 clamp(24px, 2.7vw, 42px)/1 var(--sans);
+  font: 800 clamp(20px, 2.05vw, 32px)/1 var(--sans);
   letter-spacing: 0.02em;
 }
 .hb span {
   display: block;
-  font: 700 clamp(12px, 1.25vw, 19px)/1.2 var(--sans);
+  font: 700 clamp(10.5px, 0.95vw, 15px)/1.2 var(--sans);
   margin: 2px 0 clamp(6px, 0.7vw, 10px);
 }
 .hw {
@@ -376,13 +376,13 @@ nav a[aria-current="true"] {
 }
 .hw strong {
   display: block;
-  font: 400 clamp(20px, 2vw, 32px)/1.04 var(--serif);
+  font: 400 clamp(17px, 1.55vw, 25px)/1.04 var(--serif);
   letter-spacing: -0.015em;
 }
 .hw small {
   display: block;
-  margin-top: 8px;
-  font: 500 clamp(11px, 0.95vw, 14px)/1.3 var(--sans);
+  margin-top: 6px;
+  font: 500 clamp(10px, 0.75vw, 12px)/1.3 var(--sans);
   opacity: 0.75;
 }
 /* pencil written straight onto the kraft */
@@ -773,6 +773,27 @@ nav a[aria-current="true"] {
   margin: 0 !important;
   letter-spacing: 0.02em;
 }
+/* keep the numbers crisp: only the stamp's frame carries the uneven ink */
+.ftxt.ov .fnums span {
+  position: relative;
+  border-color: transparent;
+  -webkit-mask-image: none;
+  mask-image: none;
+  opacity: 1;
+}
+.ftxt.ov .fnums span::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid #b4232f;
+  border-radius: 2px;
+  -webkit-mask-image: url(assets/textures/objects/stamp.png);
+  mask-image: url(assets/textures/objects/stamp.png);
+  -webkit-mask-size: 160px;
+  mask-size: 160px;
+  opacity: 0.9;
+  pointer-events: none;
+}
 .ftxt.ov .ffacts {
   grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
 }
@@ -862,6 +883,94 @@ nav a[aria-current="true"] {
 }
 .file.front:hover .cue {
   opacity: 1;
+}
+/* phones: the same clean stack as the case study page */
+@media (max-width: 860px) {
+  .sheetin .ftxt.ov .ffacts {
+    grid-template-columns: 1fr !important;
+    gap: 0.7cqh 0;
+    padding: 1.6cqh 0;
+  }
+  .sheetin .ftxt.ov .ffacts div {
+    grid-template-columns: 22cqw 1fr;
+    gap: 3cqw;
+    align-items: baseline;
+  }
+  .sheetin .ftxt.ov .ffacts dd {
+    font-size: max(11.5px, 2.05cqh);
+  }
+  .sheetin .ftxt.ov .fnums {
+    flex-wrap: nowrap;
+    gap: 2.2cqw;
+    padding-top: 2cqh;
+  }
+  .sheetin .ftxt.ov .fnums span {
+    flex: 1;
+    text-align: center;
+    justify-content: center;
+    padding: 0.7cqh 1cqw 0.6cqh;
+    font-size: max(7px, 1.25cqh);
+    letter-spacing: 0.03em;
+  }
+  .sheetin .ftxt.ov .fnums b {
+    font-size: max(12px, 2.7cqh) !important;
+  }
+  .sheetin .ftxt.ov .fnums span:nth-child(2) {
+    transform: rotate(2deg);
+  }
+}
+/* desktop: larger type on the sheet, sized to the sheet's height */
+@media (min-width: 861px) {
+  .ftxt.ov {
+    padding: 5cqh 7cqw 4cqh;
+  }
+  .ftxt.ov > .label {
+    font-size: max(11px, 2cqh);
+  }
+  .ftxt.ov h2 {
+    font-size: max(22px, 5.2cqh);
+    margin: 1.2cqh 0 2cqh;
+  }
+  .ftxt.ov .pcap {
+    font-size: max(9px, 1.6cqh);
+  }
+  .ftxt.ov dt {
+    font-size: max(9.5px, 1.75cqh);
+  }
+  .ftxt.ov .ffacts {
+    font-size: max(11.5px, 2.4cqh);
+    padding: 2cqh 0 1.6cqh;
+  }
+  .ftxt.ov .flede {
+    font-size: max(13px, 2.95cqh);
+    line-height: 1.32;
+    padding-top: 1.4cqh;
+  }
+  .ftxt.ov .fres {
+    font-size: max(11.5px, 2.4cqh);
+    padding-top: 2.2cqh;
+  }
+  .ftxt.ov .fres b {
+    font-size: max(9.5px, 1.75cqh);
+  }
+  .ftxt.ov .flinks {
+    font-size: max(10.5px, 1.9cqh);
+    padding-top: 1.4cqh;
+  }
+  .ftxt.ov .fnums {
+    padding-top: 2cqh;
+  }
+  .file .ftxt.ov ~ .cue {
+    width: min(26%, 200px);
+    right: 5%;
+    bottom: 2.2%;
+  }
+  .ftxt.ov .fnums span {
+    font-size: max(8.5px, 1.5cqh);
+  }
+  .ftxt.ov .fnums b {
+    font-size: max(14px, 3.2cqh) !important;
+  }
 }
 .file:not(.front) .cue {
   display: none;
@@ -1544,7 +1653,20 @@ footer {
 
 /* ── RSVP invitation, centred like a printed reply card ── */
 .rsvp {
-  grid-template-columns: minmax(0, 600px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 600px) minmax(0, 406px);
+  width: auto;
+  max-width: 100%;
+  justify-content: center;
+}
+@media (min-width: 861px) {
+  #contact {
+    padding-top: 84px;
+  }
+  .rsvp {
+    min-height: calc(100svh - 100px);
+    align-content: center;
+    margin: 0;
+  }
 }
 .invite {
   padding: clamp(30px, 5.5vh, 56px) clamp(36px, 5vw, 72px) clamp(28px, 5vh, 52px);
@@ -3070,6 +3192,32 @@ html.rm .fade {
 }
 .casev .cnav {
   padding-inline: max(clamp(20px, 5vw, 64px), calc((100% - 1320px) / 2 + clamp(20px, 5vw, 64px)));
+}
+.casev .stamps span {
+  position: relative;
+  border-color: transparent;
+  -webkit-mask-image: none;
+  mask-image: none;
+  opacity: 1;
+}
+.casev .stamps span::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border: 2px solid var(--stampred);
+  border-radius: 3px;
+  -webkit-mask-image: url(assets/textures/objects/stamp.png);
+  mask-image: url(assets/textures/objects/stamp.png);
+  -webkit-mask-size: 200px;
+  mask-size: 200px;
+  opacity: 0.9;
+  pointer-events: none;
+}
+@media (max-width: 700px) {
+  .casev .stamps span::before {
+    inset: -1.5px;
+    border-width: 1.5px;
+  }
 } /*case-scoped-end*/
 .casev {
   background: none;
