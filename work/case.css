@@ -776,3 +776,29 @@ body {
     border-width: 1.5px;
   }
 }
+/* Type rules, same as the rest of the site:
+   serif for titles only, every piece of copy in the sans at one size, small labels in mono */
+.lede,
+.setting,
+.result,
+.overview .facts dd,
+.ptext > p,
+.ptext .body p,
+.principles li {
+  font: 400 16px/1.65 var(--sans);
+  letter-spacing: 0;
+}
+.lede {
+  margin-top: 18px;
+}
+@media (max-width: 700px) {
+  .lede,
+  .setting,
+  .result,
+  .overview .facts dd,
+  .ptext > p,
+  .ptext .body p,
+  .principles li {
+    font-size: 15px;
+  }
+}

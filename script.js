@@ -51,7 +51,6 @@ const FORM_ENDPOINT = "/api/submit";
       body: "",
       img: "assets/images/audits/desk-1200.webp",
       alt: "Hands annotating printed documents beside a stack of tabbed papers",
-      cap: "",
       page: "work/audits.html",
       /* the skimmable overview: the same as the top of the case page */
       facts: [
@@ -134,16 +133,29 @@ const FORM_ENDPOINT = "/api/submit";
     "beforeend",
     '<span class="closef" aria-hidden="true"><img src="assets/notes/note-close.png" alt=""></span>',
   );
+  $("#leftflat").insertAdjacentHTML(
+    "beforeend",
+    '<button class="opencue" id="opencue"><img src="assets/notes/note-casestudy.png" alt="Read the case study"></button>',
+  );
+  $("#inside").insertAdjacentHTML(
+    "beforeend",
+    '<span class="opencue" aria-hidden="true"><img src="assets/notes/note-casestudy.png" alt=""></span>',
+  );
   $("#closef").addEventListener("click", closeFolder);
-  $("#closem").addEventListener("click", closeFolder);
+  // the pencil note opens the case file that's on top; on phones it sits under the folder
+  const readCur = () => {
+    if (opened && cur) openCase(cur);
+  };
+  $("#opencue").addEventListener("click", readCur);
+  $("#closem").addEventListener("click", readCur);
   // stickers on the inside cover
   const stickers = [
     /* add your own: {src:'assets/stickers/name.png', alt:'', x:'58%', y:'60%', w:'26%', rot:-6, stamp:false}
     x/y are the sticker's centre on the inside cover. stamp:true gives it a perforated postage-stamp edge. */
-    { src: "assets/stickers/stamp-horse.webp", alt: "", x: "31%", y: "54%", w: "33%", rot: -6 },
-    { src: "assets/stickers/stamp-oranges.webp", alt: "", x: "72%", y: "58%", w: "20%", rot: 7 },
-    { src: "assets/stickers/butterfly.webp", alt: "", x: "47%", y: "70%", w: "22%", rot: -14 },
-    { src: "assets/stickers/coffee.webp", alt: "", x: "74%", y: "85%", w: "25%", rot: 5 },
+    { src: "assets/stickers/stamp-horse.webp", alt: "", x: "32%", y: "38%", w: "34%", rot: -6 },
+    { src: "assets/stickers/stamp-oranges.webp", alt: "", x: "73%", y: "36%", w: "21%", rot: 7 },
+    { src: "assets/stickers/butterfly.webp", alt: "", x: "68%", y: "66%", w: "23%", rot: -14 },
+    { src: "assets/stickers/coffee.webp", alt: "", x: "36%", y: "70%", w: "27%", rot: 5 },
   ];
   const stickerHTML = stickers
     .map(

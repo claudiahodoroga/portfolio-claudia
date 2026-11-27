@@ -457,7 +457,7 @@ nav a[aria-current="true"] {
 }
 .closem img {
   display: block;
-  width: 150px;
+  width: 180px;
   mix-blend-mode: multiply;
   opacity: 0.85;
 }
@@ -884,6 +884,10 @@ nav a[aria-current="true"] {
 .file.front:hover .cue {
   opacity: 1;
 }
+/* index card hidden for now; delete this line to bring it back */
+.index {
+  display: none !important;
+}
 /* phones: the same clean stack as the case study page */
 @media (max-width: 860px) {
   .sheetin .ftxt.ov .ffacts {
@@ -918,52 +922,71 @@ nav a[aria-current="true"] {
   .sheetin .ftxt.ov .fnums span:nth-child(2) {
     transform: rotate(2deg);
   }
+  .sheetin .ftxt.ov h2 {
+    margin-bottom: 3cqh;
+  }
+  .sheetin .ftxt.ov .ffacts {
+    padding: 0 0 3cqh;
+  }
+  .sheetin .ftxt.ov .ffacts dd,
+  .sheetin .ftxt.ov .flede,
+  .sheetin .ftxt.ov .fres {
+    font-size: max(12px, 2.45cqh);
+    line-height: 1.45;
+  }
+  .sheetin .ftxt.ov .flede {
+    font-family: var(--sans);
+    padding-top: 0;
+  }
+  .sheetin .ftxt.ov .fres {
+    padding-top: 2.8cqh;
+  }
+  .sheetin .ftxt.ov .flinks {
+    padding-top: 1.8cqh;
+  }
+  .sheetin .ftxt.ov .fnums {
+    padding-top: 3.2cqh;
+  }
 }
-/* desktop: larger type on the sheet, sized to the sheet's height */
+/* desktop: larger type on the sheet, sized to the sheet's height.
+   Serif for the title only; all copy in the sans at one size; labels in mono. */
 @media (min-width: 861px) {
   .ftxt.ov {
-    padding: 5cqh 7cqw 4cqh;
+    padding: 5.4cqh 7cqw 5cqh;
   }
   .ftxt.ov > .label {
     font-size: max(11px, 2cqh);
   }
   .ftxt.ov h2 {
     font-size: max(22px, 5.2cqh);
-    margin: 1.2cqh 0 2cqh;
+    margin: 1.4cqh 0 3.4cqh;
   }
-  .ftxt.ov .pcap {
-    font-size: max(9px, 1.6cqh);
-  }
-  .ftxt.ov dt {
-    font-size: max(9.5px, 1.75cqh);
-  }
-  .ftxt.ov .ffacts {
-    font-size: max(11.5px, 2.4cqh);
-    padding: 2cqh 0 1.6cqh;
-  }
-  .ftxt.ov .flede {
-    font-size: max(13px, 2.95cqh);
-    line-height: 1.32;
-    padding-top: 1.4cqh;
-  }
-  .ftxt.ov .fres {
-    font-size: max(11.5px, 2.4cqh);
-    padding-top: 2.2cqh;
-  }
+  .ftxt.ov dt,
   .ftxt.ov .fres b {
     font-size: max(9.5px, 1.75cqh);
   }
+  .ftxt.ov .ffacts,
+  .ftxt.ov .flede,
+  .ftxt.ov .fres {
+    font-size: max(12px, 2.7cqh);
+    line-height: 1.45;
+  }
+  .ftxt.ov .ffacts {
+    padding: 0 0 3.4cqh;
+  }
+  .ftxt.ov .flede {
+    font-family: var(--sans);
+    padding-top: 0;
+  }
+  .ftxt.ov .fres {
+    padding-top: 3.2cqh;
+  }
   .ftxt.ov .flinks {
     font-size: max(10.5px, 1.9cqh);
-    padding-top: 1.4cqh;
-  }
-  .ftxt.ov .fnums {
     padding-top: 2cqh;
   }
-  .file .ftxt.ov ~ .cue {
-    width: min(26%, 200px);
-    right: 5%;
-    bottom: 2.2%;
+  .ftxt.ov .fnums {
+    padding-top: 3.6cqh;
   }
   .ftxt.ov .fnums span {
     font-size: max(8.5px, 1.5cqh);
@@ -974,6 +997,32 @@ nav a[aria-current="true"] {
 }
 .file:not(.front) .cue {
   display: none;
+}
+/* the "click or tap" note now lives on the inside cover (and under the folder on phones) */
+.file .cue {
+  display: none !important;
+}
+.opencue {
+  all: unset;
+  position: absolute;
+  left: 9%;
+  top: 8%;
+  z-index: 2;
+  cursor: pointer;
+}
+.opencue img {
+  display: block;
+  width: clamp(150px, 15vw, 230px);
+  mix-blend-mode: multiply;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+.opencue:hover img {
+  opacity: 1;
+}
+.opencue:focus-visible {
+  outline: 2px solid #3a2208;
+  outline-offset: 4px;
 }
 /* tabs stick out past the folder's right edge, one third of the height each */
 .ftab {
@@ -3217,6 +3266,30 @@ html.rm .fade {
   .casev .stamps span::before {
     inset: -1.5px;
     border-width: 1.5px;
+  }
+}
+.casev .lede,
+.casev .setting,
+.casev .result,
+.casev .overview .facts dd,
+.casev .ptext > p,
+.casev .ptext .body p,
+.casev .principles li {
+  font: 400 16px/1.65 var(--sans);
+  letter-spacing: 0;
+}
+.casev .lede {
+  margin-top: 18px;
+}
+@media (max-width: 700px) {
+  .casev .lede,
+  .casev .setting,
+  .casev .result,
+  .casev .overview .facts dd,
+  .casev .ptext > p,
+  .casev .ptext .body p,
+  .casev .principles li {
+    font-size: 15px;
   }
 } /*case-scoped-end*/
 .casev {
