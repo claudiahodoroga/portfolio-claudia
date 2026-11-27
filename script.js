@@ -51,7 +51,7 @@ const FORM_ENDPOINT = "/api/submit";
       body: "",
       img: "assets/images/audits/desk-1200.webp",
       alt: "Hands annotating printed documents beside a stack of tabbed papers",
-      cap: "How I handle reading through dense material",
+      cap: "",
       page: "work/audits.html",
       /* the skimmable overview: the same as the top of the case page */
       facts: [
